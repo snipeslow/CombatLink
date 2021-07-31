@@ -84,16 +84,19 @@ ALPHA: RESERVED
 sampler2D _CombatLinkTexture;
 uniform float4 _CombatLinkTexture_TexelSize;
 
+//Used by CombatLink.shader to place data in pixel coordinates
 bool DataCord(int2 target, float2 cords)
 {
 	return (target.x == floor(cords.x * _CombatLinkTexture_TexelSize.z)) && (target.y == floor(cords.y * _CombatLinkTexture_TexelSize.w));
 }
 
+//Use this to get CombatLink data, but check if it is enabled first!
 float4 GetCombatLinkData(uint position)
 {
 	return tex2Dlod(_CombatLinkTexture, float4(position*_CombatLinkTexture_TexelSize.zw, 0, 0));
 }
 
-bool CombatLinkExists() {//I NEED TO GET THIS TO WORK AT SOME POINT, also is this overkill?
+//Use this to check if CombatLink is enabled
+bool CombatLinkExists() {
 	return GetCombatLinkData(uint2(0,0)).r >= 0.5;
 }
