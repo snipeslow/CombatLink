@@ -21,7 +21,7 @@
 
             #include "UnityCG.cginc"
 		    #include "Assets/CombatLink/Shaders/CombatLink.cginc"
-
+		 
             struct appdata
             {
                 float4 vertex : POSITION;
@@ -52,16 +52,22 @@
             {
                 // sample the texture
 				fixed4 col = tex2D(_MainTex, i.uv);
-			if (CombatLinkExists(_CombatLinkTexture))
-			{
-				fixed4 HealthData = GetCombatLinkData(_CombatLinkTexture, CLPASS_LOCALPLAYER_HEALTHDATA, _CombatLinkTexture_TexelSize.xy);
-
-				fixed4 healthmask = tex2D(_HealthMask, i.uv);
-				if (healthmask.r > HealthData.r)
+				if (CombatLinkExists())
 				{
-					col *= _HealthColor;
+					fixed4 HealthData = GetCombatLinkData(CLPASS_LOCALPLAYER_HEALTHDATA1);
+
+					fixed4 healthmask = tex2D(_HealthMask, i.uv);
+					if (healthmask.r > HealthData.r)
+					{
+
+						col *= _HealthColor;
+					}
+
 				}
-			}
+				else {
+					col = fixed4(0,0,1,1);
+
+				}
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;

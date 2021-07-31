@@ -2,8 +2,6 @@
 {
 	Properties
 	{
-		_Active("Active",Range(0.0, 1.0)) = 0
-
 		_Health("Health",Range(0.0, 1.0)) = 1
 		_Armor("Armor",Range(0.0, 1.0)) = 1
 		_Shield("Shield",Range(0.0, 1.0)) = 1
@@ -33,42 +31,39 @@
 		   #pragma vertex CustomRenderTextureVertexShader
 		   #pragma fragment frag
 		   #pragma target 3.0
-			float _Active;
+			uniform float _Active;
 
-			float _Health;
-			float _Armor;
-			float _Shield;
-			float _Oxygen;
+			uniform float _Health;
+			uniform float _Armor;
+			uniform float _Shield;
+			uniform float _Oxygen;
 
-			float _Burning;
-			float _Poison;
-			float _Stun;
-			float _Bleeding;
+			uniform float _Burning;
+			uniform float _Poison;
+			uniform float _Stun;
+			uniform float _Bleeding;
 
-			float _Temperature;
-			float _AirPressure;
+			uniform float _Temperature;
+			uniform float _AirPressure;
 			float4 frag(v2f_customrendertexture IN) : COLOR
 			{ 
 				float4 Result = float4(0,0,0,0);
-				if (_Active > 0.5 )
-				{
-					if (DataCord(CLPASS_SYSTEMCHECK, IN.globalTexcoord.xy))
+					if (DataCord(uint2(0,0), IN.globalTexcoord.xy))
 					{
-						Result = float4(1.0, 0.0, 0.0, 0.0);
+						Result = float4(1, 1, 1, 1);
 					}
-					if (DataCord(CLPASS_LOCALPLAYER_HEALTHDATA, IN.globalTexcoord.xy))
+					if (DataCord(CLPASS_LOCALPLAYER_HEALTHDATA1, IN.globalTexcoord.xy))
 					{
-						Result = float4(_Health, _Armor, _Shield, 1);
+						Result = float4(_Health, _Armor, _Shield, _Oxygen);
 					}
 					if (DataCord(CLPASS_LOCALPLAYER_STATUSEFFECTS1, IN.globalTexcoord.xy))
 					{
-						Result = float4(_Burning, _Poison, _Stun, 1);
+						Result = float4(_Burning, _Poison, _Stun, _Bleeding);
 					}
 					if (DataCord(CLPASS_LOCALPLAYER_ENVIROMENTDATA1, IN.globalTexcoord.xy))
 					{
 						Result = float4(_Temperature, _AirPressure, 1, 1);
 					}
-				}
 				return Result;
 			}
 

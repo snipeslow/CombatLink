@@ -20,7 +20,6 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Floats:
-    - _Active: 1
     - _AirPressure: 0.5
     - _Armor: 1
     - _Bleeding: 1
